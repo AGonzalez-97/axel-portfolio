@@ -6,129 +6,468 @@
   <title>Axel Gonzalez — Desarrollador Digital</title>
   <meta name="description" content="Desarrollo aplicaciones web, PWAs y herramientas digitales para negocios reales. Tucumán, Argentina." />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-          animation: {
-            'fade-in': 'fadeIn 0.6s ease forwards',
-            'slide-up': 'slideUp 0.6s ease forwards',
-          },
-          keyframes: {
-            fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } },
-            slideUp: { from: { opacity: 0, transform: 'translateY(24px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
-          }
-        }
-      }
-    }
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
+    *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #060612;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── Background canvas ── */
+    .bg-scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #7c3aed, #4f46e5);
+      top: -150px; left: -150px;
+      animation: float1 12s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #06b6d4, #3b82f6);
+      top: 30%; right: -100px;
+      animation: float2 14s ease-in-out infinite;
+    }
+    .orb-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #ec4899, #8b5cf6);
+      bottom: 10%; left: 20%;
+      animation: float3 10s ease-in-out infinite;
+    }
+    .orb-4 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, #10b981, #06b6d4);
+      bottom: 40%; right: 30%;
+      opacity: 0.2;
+      animation: float1 16s ease-in-out infinite reverse;
+    }
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(40px, -30px) scale(1.05); }
+      66%       { transform: translate(-20px, 20px) scale(0.97); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%       { transform: translate(-50px, 40px) scale(1.08); }
+    }
+    @keyframes float3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      40%       { transform: translate(30px, -40px) scale(1.1); }
+      80%       { transform: translate(-10px, 20px) scale(0.95); }
+    }
+
+    /* Grid overlay */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Noise texture */
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Content sits above bg */
+    .content { position: relative; z-index: 1; }
+
+    /* ── Gradient text ── */
     .gradient-text {
-      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #38bdf8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .card-hover {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .gradient-text-hero {
+      background: linear-gradient(135deg, #fff 30%, #c4b5fd 65%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+
+    /* ── Glass cards ── */
+    .glass {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
+    .glass:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(167,139,250,0.4);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.15), 0 0 60px rgba(124,58,237,0.12);
+    }
+
+    /* ── Tag pills ── */
     .tag {
       display: inline-flex;
       align-items: center;
-      padding: 2px 10px;
+      padding: 3px 10px;
       border-radius: 9999px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.02em;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #a1a1aa;
+      letter-spacing: 0.03em;
+      background: rgba(139,92,246,0.15);
+      border: 1px solid rgba(139,92,246,0.3);
+      color: #c4b5fd;
+    }
+
+    /* ── Glow button ── */
+    .btn-glow {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border: none;
+      border-radius: 9999px;
+      padding: 12px 28px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.6), 0 0 0 1px rgba(167,139,250,0.3);
+    }
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn-glow:hover::before { opacity: 1; }
+
+    .btn-outline {
+      border-radius: 9999px;
+      padding: 12px 28px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: rgba(167,139,250,0.5);
+      background: rgba(139,92,246,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(6,6,18,0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .nav-inner {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 0.875rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 9999px;
+      border: 1px solid rgba(16,185,129,0.3);
+      background: rgba(16,185,129,0.08);
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    /* ── Sections ── */
+    section {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 96px 24px;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(167,139,250,0.7);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: 900;
+      margin: 0 0 48px 0;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 100px 24px 0;
+    }
+    .hero h1 {
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin: 24px 0;
+    }
+    .hero p {
+      font-size: 1.125rem;
+      color: rgba(255,255,255,0.5);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    /* ── Project cards ── */
+    .projects-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .project-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .project-icon { font-size: 2.2rem; }
+    .project-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+    .project-desc { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin: 0; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 8px; }
+    .project-link {
+      color: rgba(255,255,255,0.3);
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    .project-link:hover { color: #a78bfa; }
+
+    /* ── Stack grid ── */
+    .stack-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 640px) { .stack-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 900px) { .stack-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stack-card {
+      padding: 20px;
+      border-radius: 16px !important;
+    }
+    .stack-icon { font-size: 1.7rem; margin-bottom: 10px; }
+    .stack-name { font-size: 0.875rem; font-weight: 700; }
+    .stack-desc { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 3px; }
+
+    /* ── Contact ── */
+    .contact-buttons { display: flex; flex-wrap: wrap; gap: 14px; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Cursor glow ── */
+    #cursor-glow {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
     }
   </style>
 </head>
-<body class="bg-zinc-950 text-white font-sans antialiased">
+<body>
+
+  <!-- Cursor glow -->
+  <div id="cursor-glow"></div>
+
+  <!-- Background -->
+  <div class="bg-scene">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+  <div class="grid-overlay"></div>
+  <div class="noise"></div>
 
   <!-- NAV -->
-  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-zinc-950/80 backdrop-blur-md">
-    <div class="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
-      <span class="text-sm font-bold tracking-tight text-white">axel.dev97</span>
-      <div class="flex items-center gap-6 text-sm text-zinc-400">
-        <a href="#proyectos" class="hover:text-white transition-colors">Proyectos</a>
-        <a href="#stack" class="hover:text-white transition-colors">Stack</a>
-        <a href="#contacto" class="hover:text-white transition-colors">Contacto</a>
+  <nav class="content">
+    <div class="nav-inner">
+      <span class="nav-logo">axel.dev97</span>
+      <div class="nav-links">
+        <a href="#proyectos">Proyectos</a>
+        <a href="#stack">Stack</a>
+        <a href="#contacto">Contacto</a>
       </div>
     </div>
   </nav>
 
   <!-- HERO -->
-  <section class="min-h-screen flex items-center px-6 pt-20">
-    <div class="mx-auto max-w-5xl w-full animate-slide-up">
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs text-zinc-400">
-        <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Disponible para proyectos
-      </div>
-      <h1 class="text-5xl sm:text-7xl font-black tracking-tight leading-none mb-6">
-        <span class="gradient-text">Axel</span><br />
-        <span class="gradient-text">Gonzalez</span>
-      </h1>
-      <p class="text-lg sm:text-xl text-zinc-400 max-w-xl leading-relaxed mb-10">
-        Desarrollo aplicaciones web, PWAs y herramientas digitales para negocios reales.
-        Del diseño al deploy — todo en un solo lugar.
-      </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="#proyectos"
-           class="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3 text-sm font-bold hover:bg-zinc-200 transition-colors">
-          Ver proyectos
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-        <a href="https://www.instagram.com/axel.dev97/" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-zinc-300 hover:border-white/40 hover:text-white transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-          </svg>
-          @axel.dev97
-        </a>
+  <div class="content">
+    <div class="hero">
+      <div>
+        <div class="badge">
+          <span class="badge-dot"></span>
+          Disponible para proyectos
+        </div>
+        <h1 class="gradient-text-hero">Axel<br/>Gonzalez</h1>
+        <p>
+          Desarrollo aplicaciones web, PWAs y herramientas digitales para negocios reales.
+          Del diseño al deploy — todo en un solo lugar.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+          <a href="#proyectos" class="btn-glow">
+            Ver proyectos
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a href="https://www.instagram.com/axel.dev97/" target="_blank" rel="noopener noreferrer" class="btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            @axel.dev97
+          </a>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+
+  <hr class="divider" />
 
   <!-- PROYECTOS -->
-  <section id="proyectos" class="py-24 px-6">
-    <div class="mx-auto max-w-5xl">
-      <p class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Proyectos</p>
-      <h2 class="text-3xl sm:text-4xl font-black mb-12 gradient-text">Lo que construí</h2>
+  <div class="content">
+    <section id="proyectos">
+      <p class="section-label reveal">Proyectos</p>
+      <h2 class="section-title gradient-text reveal">Lo que construí</h2>
 
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="projects-grid">
 
         <!-- BarberApp -->
-        <div class="card-hover rounded-2xl border border-white/8 bg-white/3 p-6 flex flex-col gap-4">
-          <div class="flex items-start justify-between">
-            <div class="text-3xl">✂️</div>
-            <a href="https://axelbarber.vercel.app" target="_blank" rel="noopener noreferrer"
-               class="text-zinc-500 hover:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <div class="glass project-card reveal">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+            <div class="project-icon">✂️</div>
+            <a href="https://axelbarber.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver demo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </a>
           </div>
-          <div>
-            <h3 class="font-bold text-lg mb-1">BarberApp</h3>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              PWA completa para gestión de turnos de barbería. Booking online, panel admin, sistema de fidelización con descuentos automáticos y dashboard de analytics.
-            </p>
-          </div>
-          <div class="flex flex-wrap gap-1.5 mt-auto pt-2">
+          <h3 class="project-title">BarberApp</h3>
+          <p class="project-desc">PWA completa para gestión de turnos de barbería. Booking online, panel admin, sistema de fidelización con descuentos automáticos y dashboard de analytics.</p>
+          <div class="project-tags">
             <span class="tag">Next.js 14</span>
             <span class="tag">Supabase</span>
             <span class="tag">TypeScript</span>
@@ -138,17 +477,11 @@
         </div>
 
         <!-- OnixGarage -->
-        <div class="card-hover rounded-2xl border border-white/8 bg-white/3 p-6 flex flex-col gap-4">
-          <div class="flex items-start justify-between">
-            <div class="text-3xl">🔧</div>
-          </div>
-          <div>
-            <h3 class="font-bold text-lg mb-1">OnixGarage</h3>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              App móvil Android para gestión de taller mecánico. Control de órdenes de trabajo, inventario y seguimiento de vehículos por cliente.
-            </p>
-          </div>
-          <div class="flex flex-wrap gap-1.5 mt-auto pt-2">
+        <div class="glass project-card reveal">
+          <div class="project-icon">🔧</div>
+          <h3 class="project-title">OnixGarage</h3>
+          <p class="project-desc">App móvil Android para gestión de taller mecánico. Control de órdenes de trabajo, inventario y seguimiento de vehículos por cliente.</p>
+          <div class="project-tags">
             <span class="tag">Kotlin</span>
             <span class="tag">Android</span>
             <span class="tag">SQLite</span>
@@ -156,17 +489,11 @@
         </div>
 
         <!-- Reporte KPI -->
-        <div class="card-hover rounded-2xl border border-white/8 bg-white/3 p-6 flex flex-col gap-4">
-          <div class="flex items-start justify-between">
-            <div class="text-3xl">📊</div>
-          </div>
-          <div>
-            <h3 class="font-bold text-lg mb-1">Reporte KPI</h3>
-            <p class="text-sm text-zinc-400 leading-relaxed">
-              Herramienta de automatización para contact center. Genera reportes de KPIs operacionales en Excel a partir de múltiples fuentes de datos vía APIs REST.
-            </p>
-          </div>
-          <div class="flex flex-wrap gap-1.5 mt-auto pt-2">
+        <div class="glass project-card reveal">
+          <div class="project-icon">📊</div>
+          <h3 class="project-title">Reporte KPI</h3>
+          <p class="project-desc">Herramienta de automatización para contact center. Genera reportes de KPIs operacionales en Excel a partir de múltiples fuentes de datos vía APIs REST.</p>
+          <div class="project-tags">
             <span class="tag">Python</span>
             <span class="tag">Tkinter</span>
             <span class="tag">Excel</span>
@@ -175,117 +502,121 @@
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
+
+  <hr class="divider" />
 
   <!-- STACK -->
-  <section id="stack" class="py-24 px-6 border-t border-white/5">
-    <div class="mx-auto max-w-5xl">
-      <p class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Stack</p>
-      <h2 class="text-3xl sm:text-4xl font-black mb-12 gradient-text">Con qué trabajo</h2>
+  <div class="content">
+    <section id="stack">
+      <p class="section-label reveal">Stack</p>
+      <h2 class="section-title gradient-text reveal">Con qué trabajo</h2>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div class="stack-grid">
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">⚡</div>
-          <div class="font-semibold text-sm">Next.js</div>
-          <div class="text-xs text-zinc-500 mt-0.5">App Router, SSR, API Routes</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">⚡</div>
+          <div class="stack-name">Next.js</div>
+          <div class="stack-desc">App Router, SSR, API Routes</div>
         </div>
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">🔷</div>
-          <div class="font-semibold text-sm">TypeScript</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Strict mode siempre</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">🔷</div>
+          <div class="stack-name">TypeScript</div>
+          <div class="stack-desc">Strict mode siempre</div>
         </div>
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">🎨</div>
-          <div class="font-semibold text-sm">Tailwind CSS</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Utility-first, mobile-first</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">🎨</div>
+          <div class="stack-name">Tailwind CSS</div>
+          <div class="stack-desc">Utility-first, mobile-first</div>
         </div>
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">🗄️</div>
-          <div class="font-semibold text-sm">Supabase</div>
-          <div class="text-xs text-zinc-500 mt-0.5">PostgreSQL + RLS + Auth</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">🗄️</div>
+          <div class="stack-name">Supabase</div>
+          <div class="stack-desc">PostgreSQL + RLS + Auth</div>
         </div>
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">▲</div>
-          <div class="font-semibold text-sm">Vercel</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Deploy, edge, analytics</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">▲</div>
+          <div class="stack-name">Vercel</div>
+          <div class="stack-desc">Deploy, edge, analytics</div>
         </div>
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">🐍</div>
-          <div class="font-semibold text-sm">Python</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Automatización y scripts</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">🐍</div>
+          <div class="stack-name">Python</div>
+          <div class="stack-desc">Automatización y scripts</div>
         </div>
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">📱</div>
-          <div class="font-semibold text-sm">Android / Kotlin</div>
-          <div class="text-xs text-zinc-500 mt-0.5">Apps móviles nativas</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">📱</div>
+          <div class="stack-name">Android / Kotlin</div>
+          <div class="stack-desc">Apps móviles nativas</div>
         </div>
 
-        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-          <div class="text-2xl mb-2">🔐</div>
-          <div class="font-semibold text-sm">Seguridad web</div>
-          <div class="text-xs text-zinc-500 mt-0.5">RLS, CSRF, rate limiting</div>
+        <div class="glass stack-card reveal">
+          <div class="stack-icon">🔐</div>
+          <div class="stack-name">Seguridad web</div>
+          <div class="stack-desc">RLS, CSRF, rate limiting</div>
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
+
+  <hr class="divider" />
 
   <!-- CONTACTO -->
-  <section id="contacto" class="py-24 px-6 border-t border-white/5">
-    <div class="mx-auto max-w-5xl">
-      <p class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-3">Contacto</p>
-      <h2 class="text-3xl sm:text-4xl font-black mb-4 gradient-text">¿Tenés un proyecto?</h2>
-      <p class="text-zinc-400 mb-10 max-w-lg">
+  <div class="content">
+    <section id="contacto">
+      <p class="section-label reveal">Contacto</p>
+      <h2 class="section-title gradient-text reveal">¿Tenés un proyecto?</h2>
+      <p style="color:rgba(255,255,255,0.5);max-width:480px;line-height:1.7;margin-bottom:40px;" class="reveal">
         Trabajo con negocios y emprendedores que necesitan soluciones digitales reales. Si tenés una idea, hablemos.
       </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="https://www.instagram.com/axel.dev97/" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 rounded-full bg-gradient-to-br from-[#f09433] via-[#e6683c] to-[#bc1888] px-6 py-3 text-sm font-bold text-white hover:opacity-90 transition-opacity">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+      <div class="contact-buttons reveal">
+        <a href="https://www.instagram.com/axel.dev97/" target="_blank" rel="noopener noreferrer" class="btn-glow" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#bc1888);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
           </svg>
           @axel.dev97
         </a>
-        <a href="https://github.com/AGonzalez-97" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-3 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-zinc-300 hover:border-white/40 hover:text-white transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+        <a href="https://github.com/AGonzalez-97" target="_blank" rel="noopener noreferrer" class="btn-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
           </svg>
           GitHub
         </a>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <!-- FOOTER -->
-  <footer class="border-t border-white/5 py-8 px-6 text-center text-xs text-zinc-600">
-    © 2025 Axel Gonzalez · Tucumán, Argentina
-  </footer>
+  <footer>© 2025 Axel Gonzalez · Tucumán, Argentina</footer>
 
   <script>
-    // Animate sections on scroll
-    const observer = new IntersectionObserver((entries) => {
+    // Cursor glow
+    const glow = document.getElementById('cursor-glow')
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px'
+      glow.style.top  = e.clientY + 'px'
+    })
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          e.target.style.opacity = '1'
-          e.target.style.transform = 'translateY(0)'
+          e.target.classList.add('visible')
+          observer.unobserve(e.target)
         }
       })
-    }, { threshold: 0.1 })
+    }, { threshold: 0.12 })
 
-    document.querySelectorAll('section').forEach(section => {
-      section.style.opacity = '0'
-      section.style.transform = 'translateY(24px)'
-      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease'
-      observer.observe(section)
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i % 4) * 80 + 'ms'
+      observer.observe(el)
     })
   </script>
 
