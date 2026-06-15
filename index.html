@@ -185,22 +185,55 @@
       <h2 class="text-3xl sm:text-4xl font-black mb-12 gradient-text">Con qué trabajo</h2>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {[
-          { icon: '⚡', name: 'Next.js', desc: 'App Router, SSR, API Routes' },
-          { icon: '🔷', name: 'TypeScript', desc: 'Strict mode siempre' },
-          { icon: '🎨', name: 'Tailwind CSS', desc: 'Utility-first, mobile-first' },
-          { icon: '🗄️', name: 'Supabase', desc: 'PostgreSQL + RLS + Auth' },
-          { icon: '▲', name: 'Vercel', desc: 'Deploy, edge, analytics' },
-          { icon: '🐍', name: 'Python', desc: 'Automatización y scripts' },
-          { icon: '📱', name: 'Android / Kotlin', desc: 'Apps móviles nativas' },
-          { icon: '🔐', name: 'Seguridad web', desc: 'RLS, CSRF, rate limiting' },
-        ].map(item => `
-          <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
-            <div class="text-2xl mb-2">${item.icon}</div>
-            <div class="font-semibold text-sm">${item.name}</div>
-            <div class="text-xs text-zinc-500 mt-0.5">${item.desc}</div>
-          </div>
-        `).join('')}
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">⚡</div>
+          <div class="font-semibold text-sm">Next.js</div>
+          <div class="text-xs text-zinc-500 mt-0.5">App Router, SSR, API Routes</div>
+        </div>
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">🔷</div>
+          <div class="font-semibold text-sm">TypeScript</div>
+          <div class="text-xs text-zinc-500 mt-0.5">Strict mode siempre</div>
+        </div>
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">🎨</div>
+          <div class="font-semibold text-sm">Tailwind CSS</div>
+          <div class="text-xs text-zinc-500 mt-0.5">Utility-first, mobile-first</div>
+        </div>
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">🗄️</div>
+          <div class="font-semibold text-sm">Supabase</div>
+          <div class="text-xs text-zinc-500 mt-0.5">PostgreSQL + RLS + Auth</div>
+        </div>
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">▲</div>
+          <div class="font-semibold text-sm">Vercel</div>
+          <div class="text-xs text-zinc-500 mt-0.5">Deploy, edge, analytics</div>
+        </div>
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">🐍</div>
+          <div class="font-semibold text-sm">Python</div>
+          <div class="text-xs text-zinc-500 mt-0.5">Automatización y scripts</div>
+        </div>
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">📱</div>
+          <div class="font-semibold text-sm">Android / Kotlin</div>
+          <div class="text-xs text-zinc-500 mt-0.5">Apps móviles nativas</div>
+        </div>
+
+        <div class="card-hover rounded-xl border border-white/8 bg-white/3 p-4">
+          <div class="text-2xl mb-2">🔐</div>
+          <div class="font-semibold text-sm">Seguridad web</div>
+          <div class="text-xs text-zinc-500 mt-0.5">RLS, CSRF, rate limiting</div>
+        </div>
+
       </div>
     </div>
   </section>
