@@ -226,11 +226,46 @@
     .nav-links { display: flex; gap: 28px; }
     .nav-links a {
       font-size: 0.875rem;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.3);
       text-decoration: none;
-      transition: color 0.2s;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.3s ease, opacity 0.3s ease;
     }
-    .nav-links a:hover { color: #fff; }
+    /* underline track */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      right: 50%;
+      height: 1.5px;
+      background: linear-gradient(90deg, #7c3aed, #38bdf8);
+      border-radius: 9999px;
+      transition: left 0.3s cubic-bezier(0.4,0,0.2,1), right 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .nav-links a:hover {
+      color: #fff;
+    }
+    .nav-links a:hover::after {
+      left: 0;
+      right: 0;
+      opacity: 1;
+    }
+    /* active state (set via JS scroll spy) */
+    .nav-links a.active {
+      color: #e2e8f0;
+    }
+    .nav-links a.active::after {
+      left: 0;
+      right: 0;
+      opacity: 0.7;
+    }
+    /* fade siblings when one is hovered */
+    .nav-links:hover a:not(:hover) {
+      color: rgba(255,255,255,0.18);
+    }
 
     /* ── Badge ── */
     .badge {
@@ -603,6 +638,20 @@
       glow.style.left = e.clientX + 'px'
       glow.style.top  = e.clientY + 'px'
     })
+
+    // Scroll spy — active nav link
+    const sections = ['proyectos', 'stack', 'contacto'].map(id => document.getElementById(id))
+    const navLinks = document.querySelectorAll('.nav-links a')
+    const spyObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'))
+          const link = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`)
+          if (link) link.classList.add('active')
+        }
+      })
+    }, { rootMargin: '-40% 0px -55% 0px' })
+    sections.forEach(s => s && spyObserver.observe(s))
 
     // Scroll reveal
     const observer = new IntersectionObserver(entries => {
