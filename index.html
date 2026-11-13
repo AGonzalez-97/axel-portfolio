@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axel Gonzalez — Real-Time, Reporting y Automatización</title>
   <meta name="description" content="Analista de Real-Time y Reporting en Workforce Management. Automatizo reportes con Python y Excel VBA y desarrollo productos digitales. Tucumán, Argentina." />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://axeldev-portfolio.vercel.app/" />
+  <meta property="og:title" content="Axel Gonzalez — Real-Time, Reporting y Automatización" />
+  <meta property="og:description" content="Analista de Real-Time y Reporting en Workforce Management. Automatizo reportes con Python y Excel VBA. Demos con datos ficticios y proyectos personales." />
+  <meta property="og:image" content="https://axeldev-portfolio.vercel.app/assets/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#060612" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c3aed'/%3E%3Cstop offset='1' stop-color='%2338bdf8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='34' font-weight='700' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -19,415 +27,172 @@
       color: #fff;
       overflow-x: hidden;
     }
+    a:focus-visible, button:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; border-radius: 6px; }
 
-    /* ── Background canvas ── */
-    .bg-scene {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.35;
-    }
-    .orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, #7c3aed, #4f46e5);
-      top: -150px; left: -150px;
-      animation: float1 12s ease-in-out infinite;
-    }
-    .orb-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, #06b6d4, #3b82f6);
-      top: 30%; right: -100px;
-      animation: float2 14s ease-in-out infinite;
-    }
-    .orb-3 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, #ec4899, #8b5cf6);
-      bottom: 10%; left: 20%;
-      animation: float3 10s ease-in-out infinite;
-    }
-    .orb-4 {
-      width: 350px; height: 350px;
-      background: radial-gradient(circle, #10b981, #06b6d4);
-      bottom: 40%; right: 30%;
-      opacity: 0.2;
-      animation: float1 16s ease-in-out infinite reverse;
-    }
-    @keyframes float1 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33%       { transform: translate(40px, -30px) scale(1.05); }
-      66%       { transform: translate(-20px, 20px) scale(0.97); }
-    }
-    @keyframes float2 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50%       { transform: translate(-50px, 40px) scale(1.08); }
-    }
-    @keyframes float3 {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      40%       { transform: translate(30px, -40px) scale(1.1); }
-      80%       { transform: translate(-10px, 20px) scale(0.95); }
-    }
-
-    /* Grid overlay */
+    /* ── Background ── */
+    .bg-scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; }
+    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, #7c3aed, #4f46e5); top: -150px; left: -150px; animation: float1 12s ease-in-out infinite; }
+    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, #06b6d4, #3b82f6); top: 30%; right: -100px; animation: float2 14s ease-in-out infinite; }
+    .orb-3 { width: 400px; height: 400px; background: radial-gradient(circle, #ec4899, #8b5cf6); bottom: 10%; left: 20%; animation: float3 10s ease-in-out infinite; }
+    .orb-4 { width: 350px; height: 350px; background: radial-gradient(circle, #10b981, #06b6d4); bottom: 40%; right: 30%; opacity: 0.2; animation: float1 16s ease-in-out infinite reverse; }
+    @keyframes float1 { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(40px, -30px) scale(1.05); } 66% { transform: translate(-20px, 20px) scale(0.97); } }
+    @keyframes float2 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-50px, 40px) scale(1.08); } }
+    @keyframes float3 { 0%, 100% { transform: translate(0, 0) scale(1); } 40% { transform: translate(30px, -40px) scale(1.1); } 80% { transform: translate(-10px, 20px) scale(0.95); } }
     .grid-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
       background-size: 60px 60px;
     }
-
-    /* Noise texture */
-    .noise {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.04;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    }
-
-    /* Content sits above bg */
     .content { position: relative; z-index: 1; }
 
-    /* ── Gradient text ── */
-    .gradient-text {
-      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #38bdf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .gradient-text-hero {
-      background: linear-gradient(135deg, #fff 30%, #c4b5fd 65%, #67e8f9 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+    /* ── Text ── */
+    .gradient-text { background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-text-hero { background: linear-gradient(135deg, #fff 30%, #c4b5fd 65%, #67e8f9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .muted { color: rgba(255,255,255,0.64); }
 
     /* ── Glass cards ── */
     .glass {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border-radius: 20px;
       transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
-    .glass:hover {
+    .glass.lift:hover {
       transform: translateY(-6px);
       background: rgba(255,255,255,0.07);
       border-color: rgba(167,139,250,0.4);
       box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.15), 0 0 60px rgba(124,58,237,0.12);
     }
 
-    /* ── Tag pills ── */
     .tag {
-      display: inline-flex;
-      align-items: center;
-      padding: 3px 10px;
-      border-radius: 9999px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      background: rgba(139,92,246,0.15);
-      border: 1px solid rgba(139,92,246,0.3);
-      color: #c4b5fd;
+      display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 9999px;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.03em;
+      background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); color: #c4b5fd;
     }
 
-    /* ── Glow button ── */
-    .btn-glow {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      border: none;
-      border-radius: 9999px;
-      padding: 12px 28px;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: #fff;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
+    /* ── Buttons ── */
+    .btn-glow, .btn-outline {
+      border-radius: 9999px; padding: 12px 24px; font-size: 0.875rem; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
     }
-    .btn-glow:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(124,58,237,0.6), 0 0 0 1px rgba(167,139,250,0.3);
-    }
-    .btn-glow::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .btn-glow:hover::before { opacity: 1; }
-
-    .btn-outline {
-      border-radius: 9999px;
-      padding: 12px 28px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #e2e8f0;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(8px);
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    }
-    .btn-outline:hover {
-      border-color: rgba(167,139,250,0.5);
-      background: rgba(139,92,246,0.08);
-      transform: translateY(-2px);
-    }
+    .btn-glow { background: linear-gradient(135deg, #7c3aed, #4f46e5); border: none; font-weight: 700; color: #fff; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,58,237,0.6), 0 0 0 1px rgba(167,139,250,0.3); }
+    .btn-outline { font-weight: 600; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); backdrop-filter: blur(8px); transition: border-color 0.2s, background 0.2s, transform 0.2s; }
+    .btn-outline:hover { border-color: rgba(167,139,250,0.5); background: rgba(139,92,246,0.08); transform: translateY(-2px); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
 
     /* ── Nav ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 50;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
       border-bottom: 1px solid rgba(255,255,255,0.06);
-      background: rgba(6,6,18,0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(6,6,18,0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     }
-    .nav-inner {
-      max-width: 1024px;
-      margin: 0 auto;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .nav-logo {
-      font-size: 0.875rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #a78bfa, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .nav-links { display: flex; gap: 28px; }
-    .nav-links a {
-      font-size: 0.875rem;
-      color: rgba(255,255,255,0.3);
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 3px;
-      transition: color 0.3s ease, opacity 0.3s ease;
-    }
-    /* underline track */
+    .nav-inner { max-width: 1080px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .nav-logo { font-size: 0.875rem; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+    .nav-links { display: flex; gap: 26px; }
+    .nav-links a { font-size: 0.875rem; color: rgba(255,255,255,0.6); text-decoration: none; position: relative; padding-bottom: 3px; transition: color 0.3s ease; }
     .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 50%;
-      right: 50%;
-      height: 1.5px;
-      background: linear-gradient(90deg, #7c3aed, #38bdf8);
-      border-radius: 9999px;
+      content: ''; position: absolute; bottom: -1px; left: 50%; right: 50%; height: 1.5px;
+      background: linear-gradient(90deg, #7c3aed, #38bdf8); border-radius: 9999px; opacity: 0;
       transition: left 0.3s cubic-bezier(0.4,0,0.2,1), right 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
-      opacity: 0;
     }
-    .nav-links a:hover {
-      color: #fff;
-    }
-    .nav-links a:hover::after {
-      left: 0;
-      right: 0;
-      opacity: 1;
-    }
-    /* active state (set via JS scroll spy) */
-    .nav-links a.active {
-      color: #e2e8f0;
-    }
-    .nav-links a.active::after {
-      left: 0;
-      right: 0;
-      opacity: 0.7;
-    }
-    /* fade siblings when one is hovered */
-    .nav-links:hover a:not(:hover) {
-      color: rgba(255,255,255,0.18);
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-links a:hover::after, .nav-links a.active::after { left: 0; right: 0; opacity: 1; }
+    @media (max-width: 520px) {
+      .nav-logo { display: none; }
+      .nav-inner { justify-content: center; padding: 14px 16px; }
+      .nav-links { gap: 20px; }
     }
 
     /* ── Badge ── */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 9999px;
-      border: 1px solid rgba(16,185,129,0.3);
-      background: rgba(16,185,129,0.08);
-      padding: 6px 16px;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.6);
-    }
-    .badge-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 8px #10b981;
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.6; transform: scale(0.85); }
-    }
+    .badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); padding: 6px 16px; font-size: 0.75rem; color: rgba(255,255,255,0.75); }
+    .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }
 
     /* ── Sections ── */
-    section {
-      max-width: 1024px;
-      margin: 0 auto;
-      padding: 96px 24px;
-    }
-    .section-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(167,139,250,0.7);
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
-      font-weight: 900;
-      margin: 0 0 48px 0;
-    }
+    section { max-width: 1080px; margin: 0 auto; padding: 88px 24px; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(167,139,250,0.85); margin: 0 0 12px; }
+    .section-title { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 900; margin: 0 0 40px 0; }
+    .group-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; margin: 0 0 18px; }
+    .group-head h3 { font-size: 1.05rem; font-weight: 700; margin: 0; }
+    .group-head span { font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+    .group + .group { margin-top: 52px; }
 
     /* ── Hero ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      max-width: 1024px;
-      margin: 0 auto;
-      padding: 100px 24px 0;
-    }
-    .hero h1 {
-      font-size: clamp(3.5rem, 12vw, 7rem);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.03em;
-      margin: 24px 0;
-    }
-    .hero p {
-      font-size: 1.125rem;
-      color: rgba(255,255,255,0.5);
-      max-width: 520px;
-      line-height: 1.7;
-      margin-bottom: 40px;
-    }
+    .hero { min-height: 100vh; max-width: 1080px; margin: 0 auto; padding: 110px 24px 56px; display: grid; align-items: center; gap: 48px; grid-template-columns: 1fr; }
+    @media (min-width: 940px) { .hero { grid-template-columns: 1.05fr 1fr; } }
+    .hero h1 { font-size: clamp(3.2rem, 9vw, 5.6rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; margin: 22px 0; }
+    .hero p.lead { font-size: 1.1rem; color: rgba(255,255,255,0.66); max-width: 520px; line-height: 1.7; margin: 0 0 32px; }
+    .hero-shot { display: block; text-decoration: none; color: inherit; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.14); background: #0b0f1e; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 80px rgba(124,58,237,0.18); transition: transform 0.35s ease, box-shadow 0.35s ease; }
+    @media (min-width: 940px) { .hero-shot { transform: perspective(1400px) rotateY(-7deg) rotateX(2deg); } .hero-shot:hover { transform: perspective(1400px) rotateY(-2deg) rotateX(0deg) translateY(-4px); } }
+    .shot-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.7rem; color: rgba(255,255,255,0.55); }
+    .shot-bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.22); }
+    .shot-bar b { margin-left: 8px; font-weight: 500; }
+    .hero-shot img { display: block; width: 100%; height: auto; }
+    .shot-cap { padding: 10px 14px; font-size: 0.78rem; color: rgba(255,255,255,0.7); display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .shot-cap strong { color: #c4b5fd; font-weight: 600; white-space: nowrap; }
 
-    /* ── Project cards ── */
-    .projects-grid {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-    .project-card {
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .project-icon { font-size: 2.2rem; }
-    .project-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
-    .project-desc { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.65; margin: 0; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 8px; }
-    .project-link {
-      color: rgba(255,255,255,0.3);
-      transition: color 0.2s;
-      text-decoration: none;
-    }
-    .project-link:hover { color: #a78bfa; }
+    /* ── Stats ── */
+    .stats { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 20px; }
+    .stat { padding: 26px 28px; }
+    .stat-num { font-size: 2.1rem; font-weight: 900; line-height: 1; background: linear-gradient(135deg, #a78bfa, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-title { font-size: 0.9rem; font-weight: 700; margin: 10px 0 4px; }
+    .stat-desc { font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    .about { padding: 30px 32px; }
+    .about p { font-size: 0.97rem; color: rgba(255,255,255,0.72); line-height: 1.85; margin: 0 0 20px; }
+    .about ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .about li { display: flex; gap: 12px; font-size: 0.89rem; color: rgba(255,255,255,0.68); line-height: 1.55; }
+    .about li::before { content: '▸'; color: #a78bfa; flex: none; }
 
-    /* ── Stack grid ── */
-    .stack-grid {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(2, 1fr);
-    }
-    @media (min-width: 640px) { .stack-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (min-width: 900px) { .stack-grid { grid-template-columns: repeat(4, 1fr); } }
-    .stack-card {
-      padding: 20px;
-      border-radius: 16px !important;
-    }
-    .stack-icon { font-size: 1.7rem; margin-bottom: 10px; }
-    .stack-name { font-size: 0.875rem; font-weight: 700; }
-    .stack-desc { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 3px; }
+    /* ── Projects ── */
+    .projects-grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .project-card { display: flex; flex-direction: column; overflow: hidden; }
+    .project-thumb { display: block; position: relative; aspect-ratio: 16 / 9.5; overflow: hidden; background: #0b0f1e; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .project-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; transition: transform 0.5s ease; }
+    .project-card:hover .project-thumb img { transform: scale(1.04); }
+    .thumb-note { position: absolute; left: 12px; bottom: 12px; padding: 4px 10px; border-radius: 9999px; font-size: 0.68rem; font-weight: 600; background: rgba(6,6,18,0.82); border: 1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
+    .project-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .project-title { font-size: 1.12rem; font-weight: 700; margin: 0; }
+    .project-desc { font-size: 0.88rem; color: rgba(255,255,255,0.66); line-height: 1.65; margin: 0; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .project-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 8px; }
+    .link-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 0.82rem; font-weight: 600; text-decoration: none; padding: 8px 14px; border-radius: 9999px; transition: background 0.2s, border-color 0.2s; }
+    .link-btn.primary { color: #fff; background: rgba(124,58,237,0.32); border: 1px solid rgba(167,139,250,0.5); }
+    .link-btn.primary:hover { background: rgba(124,58,237,0.5); }
+    .link-btn.ghost { color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.16); }
+    .link-btn.ghost:hover { border-color: rgba(167,139,250,0.5); color: #fff; }
 
-    /* ── Contact ── */
-    .contact-buttons { display: flex; flex-wrap: wrap; gap: 14px; }
+    /* ── Stack ── */
+    .stack-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 560px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .stack-grid { grid-template-columns: repeat(3, 1fr); } }
+    .stack-card { padding: 18px 20px; border-radius: 16px; }
+    .stack-name { font-size: 0.92rem; font-weight: 700; }
+    .stack-desc { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 4px; line-height: 1.5; }
 
     /* ── Footer ── */
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.05);
-      padding: 32px 24px;
-      text-align: center;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.2);
-      position: relative;
-      z-index: 1;
-    }
+    footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 30px 24px; text-align: center; font-size: 0.78rem; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
+    .divider { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 0 24px; position: relative; z-index: 1; }
 
-    /* ── Scroll reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* ── Scroll reveal (only when JS is available) ── */
+    .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .js .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── Divider ── */
-    .divider {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      margin: 0 24px;
-      position: relative;
-      z-index: 1;
-    }
+    #cursor-glow { position: fixed; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%); pointer-events: none; z-index: 0; transform: translate(-50%, -50%); }
 
-    /* ── Cursor glow ── */
-    #cursor-glow {
-      position: fixed;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s;
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .orb, .badge-dot { animation: none; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .glass, .hero-shot, .project-thumb img { transition: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Cursor glow -->
   <div id="cursor-glow"></div>
-
-  <!-- Background -->
   <div class="bg-scene">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -435,12 +200,11 @@
     <div class="orb orb-4"></div>
   </div>
   <div class="grid-overlay"></div>
-  <div class="noise"></div>
 
   <!-- NAV -->
-  <nav class="content">
+  <nav class="content" aria-label="Principal">
     <div class="nav-inner">
-      <span class="nav-logo">axel.dev97</span>
+      <a class="nav-logo" href="#inicio">axel.dev97</a>
       <div class="nav-links">
         <a href="#sobre-mi">Sobre mí</a>
         <a href="#proyectos">Proyectos</a>
@@ -451,322 +215,249 @@
   </nav>
 
   <!-- HERO -->
-  <div class="content">
+  <header class="content" id="inicio">
     <div class="hero">
       <div>
-        <div class="badge">
-          <span class="badge-dot"></span>
-          Abierto a oportunidades
-        </div>
+        <div class="badge"><span class="badge-dot"></span>Abierto a oportunidades</div>
         <h1 class="gradient-text-hero">Axel<br/>Gonzalez</h1>
-        <p>
+        <p class="lead">
           Analista de Real-Time y Reporting en Workforce Management. Automatizo reportes con Python
           y Excel VBA, y construyo productos digitales para negocios reales.
         </p>
-        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+        <div class="btn-row">
           <a href="#proyectos" class="btn-glow">
             Ver proyectos
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </a>
-          <a href="https://www.instagram.com/axel.dev97/" target="_blank" rel="noopener noreferrer" class="btn-outline">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-            @axel.dev97
+          <a href="https://www.linkedin.com/in/ahgonzalez97/" target="_blank" rel="noopener noreferrer" class="btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/AGonzalez-97" target="_blank" rel="noopener noreferrer" class="btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
           </a>
         </div>
       </div>
+
+      <a class="hero-shot" href="https://agonzalez-97.github.io/contact-center-kpi-demo/" target="_blank" rel="noopener noreferrer" aria-label="Abrir la demo del panel de reportes operativos">
+        <div class="shot-bar"><i></i><i></i><i></i><b>Panel de reportes operativos</b></div>
+        <img src="assets/kpi.webp" width="960" height="600" alt="Panel de reportes operativos para contact center: indicadores del día, tabla por colas y tráfico por intervalo de 30 minutos" />
+        <div class="shot-cap"><span>Demo con datos ficticios del tipo de herramientas que desarrollo</span><strong>Abrir demo →</strong></div>
+      </a>
     </div>
-  </div>
+  </header>
 
   <hr class="divider" />
 
   <!-- SOBRE MÍ -->
-  <div class="content">
+  <main class="content">
     <section id="sobre-mi">
       <p class="section-label reveal">Sobre mí</p>
       <h2 class="section-title gradient-text reveal">Lo que me diferencia</h2>
 
-      <div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:48px;">
-
-        <div class="glass reveal" style="padding:28px;border-radius:20px;">
-          <div style="font-size:2rem;margin-bottom:12px;">⏱️</div>
-          <div style="font-size:2rem;font-weight:900;background:linear-gradient(135deg,#a78bfa,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">40 → 5 min</div>
-          <div style="font-size:0.875rem;font-weight:700;margin:6px 0 4px;">Elaboración de reportes por campaña</div>
-          <div style="font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.6;">Los reportes se armaban en Excel y demoraban por el volumen de datos. Los pasé a herramientas propias en Python.</div>
+      <div class="stats">
+        <div class="glass stat reveal">
+          <div class="stat-num">40 → 5 min</div>
+          <div class="stat-title">Elaboración de reportes por campaña</div>
+          <div class="stat-desc">Los reportes se armaban en Excel y demoraban por el volumen de datos. Los pasé a herramientas propias en Python.</div>
         </div>
-
-        <div class="glass reveal" style="padding:28px;border-radius:20px;">
-          <div style="font-size:2rem;margin-bottom:12px;">📈</div>
-          <div style="font-size:2rem;font-weight:900;background:linear-gradient(135deg,#a78bfa,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">+6 campañas</div>
-          <div style="font-size:0.875rem;font-weight:700;margin:6px 0 4px;">Usan mis herramientas de reporting</div>
-          <div style="font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.6;">Reportes operativos por franja de 30 minutos, automatizados con Python y macros de Excel VBA.</div>
+        <div class="glass stat reveal">
+          <div class="stat-num">+6 campañas</div>
+          <div class="stat-title">Usan mis herramientas de reporting</div>
+          <div class="stat-desc">Reportes operativos por franja de 30 minutos, automatizados con Python y macros de Excel VBA.</div>
         </div>
-
-        <div class="glass reveal" style="padding:28px;border-radius:20px;">
-          <div style="font-size:2rem;margin-bottom:12px;">🎯</div>
-          <div style="font-size:2rem;font-weight:900;background:linear-gradient(135deg,#a78bfa,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;">7 años</div>
-          <div style="font-size:0.875rem;font-weight:700;margin:6px 0 4px;">En Teleperformance, con dos promociones</div>
-          <div style="font-size:0.8rem;color:rgba(255,255,255,0.45);line-height:1.6;">De atención al cliente a redes sociales, y desde 2022 en Workforce Management (Mission Control Online).</div>
+        <div class="glass stat reveal">
+          <div class="stat-num">7 años</div>
+          <div class="stat-title">En Teleperformance, con dos promociones</div>
+          <div class="stat-desc">De atención al cliente a redes sociales, y desde 2022 en Workforce Management (Mission Control Online).</div>
         </div>
-
       </div>
 
-      <div class="glass reveal" style="padding:32px;border-radius:20px;">
-        <p style="font-size:0.95rem;color:rgba(255,255,255,0.6);line-height:1.85;margin:0 0 24px;">
+      <div class="glass about reveal">
+        <p>
           Lo que me diferencia es combinar <strong style="color:#c4b5fd;">visión operativa</strong> con <strong style="color:#67e8f9;">capacidad técnica</strong>: entiendo el negocio porque lo viví desde la primera línea, y construyo herramientas que resuelven problemas concretos de la operación.
         </p>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;align-items:center;gap:12px;font-size:0.875rem;color:rgba(255,255,255,0.55);">
-            <span style="color:#a78bfa;font-size:1rem;">▸</span> Monitoreo en tiempo real colas y agentes: nivel de servicio, ASA, AHT y adherencia
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:0.875rem;color:rgba(255,255,255,0.55);">
-            <span style="color:#a78bfa;font-size:1rem;">▸</span> Gestiono desvíos intradía y ajusto turnos en tiempo real para cuentas de Chile y Argentina
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:0.875rem;color:rgba(255,255,255,0.55);">
-            <span style="color:#a78bfa;font-size:1rem;">▸</span> Automatizo reportes con Python (Pandas) y macros de Excel VBA
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:0.875rem;color:rgba(255,255,255,0.55);">
-            <span style="color:#a78bfa;font-size:1rem;">▸</span> Desarrollo con asistencia de IA y enfoque spec-driven: defino requisitos y reglas de cálculo, y valido contra datos reales
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;font-size:0.875rem;color:rgba(255,255,255,0.55);">
-            <span style="color:#a78bfa;font-size:1rem;">▸</span> Programador Universitario · UTN (un año cursado)
-          </div>
-        </div>
+        <ul>
+          <li>Monitoreo en tiempo real colas y agentes: nivel de servicio, ASA, AHT y adherencia</li>
+          <li>Gestiono desvíos intradía y ajusto turnos en tiempo real para cuentas de Chile y Argentina</li>
+          <li>Automatizo reportes con Python (Pandas) y macros de Excel VBA</li>
+          <li>Desarrollo con asistencia de IA y enfoque spec-driven: defino requisitos y reglas de cálculo, y valido contra datos reales</li>
+          <li>Programador Universitario · UTN (un año cursado)</li>
+        </ul>
       </div>
     </section>
-  </div>
 
-  <hr class="divider" />
+    <hr class="divider" />
 
-  <!-- PROYECTOS -->
-  <div class="content">
+    <!-- PROYECTOS -->
     <section id="proyectos">
       <p class="section-label reveal">Proyectos</p>
       <h2 class="section-title gradient-text reveal">Lo que construí</h2>
 
-      <div class="projects-grid">
-
-        <!-- Panel de reportes operativos (demo) -->
-        <div class="glass project-card reveal">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
-            <div class="project-icon">📊</div>
-            <span style="display:flex;gap:10px;">
-              <a href="https://github.com/AGonzalez-97/contact-center-kpi-demo" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver código en GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 00-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.78 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg></a>
-              <a href="https://agonzalez-97.github.io/contact-center-kpi-demo/" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver demo con datos ficticios"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a>
-            </span>
-          </div>
-          <h3 class="project-title">Panel de reportes operativos (demo)</h3>
-          <p class="project-desc">Maqueta navegable de un sistema de reportes operativos para contact center con varias campañas: nivel de atención, nivel de servicio, abandono, tiempos de atención y dotación por franja de 30 minutos. Representa el tipo de herramientas que desarrollo en mi trabajo; el código real es privado, por eso la demo usa datos ficticios.</p>
-          <div class="project-tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">Datos ficticios</span>
-          </div>
+      <div class="group">
+        <div class="group-head reveal">
+          <h3>Herramientas de trabajo</h3>
+          <span>El código real es privado: son demos navegables con datos ficticios.</span>
         </div>
+        <div class="projects-grid">
 
-        <!-- Postmortem Hub (demo) -->
-        <div class="glass project-card reveal">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
-            <div class="project-icon">📈</div>
-            <span style="display:flex;gap:10px;">
-              <a href="https://github.com/AGonzalez-97/monthly-postmortem-demo" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver código en GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 00-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.78 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg></a>
-              <a href="https://agonzalez-97.github.io/monthly-postmortem-demo/" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver demo con datos ficticios"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a>
-            </span>
-          </div>
-          <h3 class="project-title">Hub de postmortem mensual (demo)</h3>
-          <p class="project-desc">Maqueta navegable de un hub de cierre mensual para varias campañas: se elige la fecha, se procesan las campañas y se obtiene un tablero para el correo, un Excel con hojas MES y DIA y un borrador de correo para revisar. El código real es privado; la demo usa datos ficticios.</p>
-          <div class="project-tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">Datos ficticios</span>
-          </div>
-        </div>
-
-        <!-- BarberApp -->
-        <div class="glass project-card reveal">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
-            <div class="project-icon">✂️</div>
-            <a href="https://axelbarber.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver demo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
+          <article class="glass lift project-card reveal">
+            <a class="project-thumb" href="https://agonzalez-97.github.io/contact-center-kpi-demo/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+              <img src="assets/kpi.webp" width="960" height="600" loading="lazy" alt="" />
+              <span class="thumb-note">Datos ficticios</span>
             </a>
-          </div>
-          <h3 class="project-title">BarberApp</h3>
-          <p class="project-desc">PWA completa para gestión de turnos de barbería. Booking online, panel admin, sistema de fidelización con descuentos automáticos y dashboard de analytics.</p>
-          <div class="project-tags">
-            <span class="tag">Next.js 14</span>
-            <span class="tag">Supabase</span>
-            <span class="tag">TypeScript</span>
-            <span class="tag">PWA</span>
-            <span class="tag">Vercel</span>
-          </div>
-        </div>
+            <div class="project-body">
+              <h4 class="project-title">Panel de reportes operativos</h4>
+              <p class="project-desc">Sistema de reportes para contact center con varias campañas: nivel de atención, nivel de servicio, abandono, tiempos de atención y dotación por franja de 30 minutos. Representa el tipo de herramientas que desarrollo en mi trabajo.</p>
+              <div class="project-tags"><span class="tag">Reporting</span><span class="tag">KPIs por intervalo</span><span class="tag">HTML · CSS · JS</span></div>
+              <div class="project-actions">
+                <a class="link-btn primary" href="https://agonzalez-97.github.io/contact-center-kpi-demo/" target="_blank" rel="noopener noreferrer">Ver demo →</a>
+                <a class="link-btn ghost" href="https://github.com/AGonzalez-97/contact-center-kpi-demo" target="_blank" rel="noopener noreferrer">Código de la demo</a>
+              </div>
+            </div>
+          </article>
 
-        <!-- HeadUnitLite -->
-        <div class="glass project-card reveal">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
-            <div class="project-icon">🚗</div>
-            <span style="display:flex;gap:10px;">
-              <a href="https://github.com/AGonzalez-97/HeadUnitLite" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver código en GitHub">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 00-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.78 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg>
-              </a>
-              <a href="https://agonzalez-97.github.io/HeadUnitLite/" target="_blank" rel="noopener noreferrer" class="project-link" title="Ver demo visual">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </span>
-          </div>
-          <h3 class="project-title">HeadUnitLite</h3>
-          <p class="project-desc">Proyecto personal de pasatiempo: launcher para la radio Android de un auto (clima, música, radio FM, navegación y diagnóstico OBD2) y una app compañera para mantenimiento, nafta y neumáticos. Desarrollado con IA y especificaciones (spec-driven).</p>
-          <div class="project-tags">
-            <span class="tag">Kotlin</span>
-            <span class="tag">Jetpack Compose</span>
-            <span class="tag">Android</span>
-            <span class="tag">OBD2</span>
-          </div>
-        </div>
+          <article class="glass lift project-card reveal">
+            <a class="project-thumb" href="https://agonzalez-97.github.io/monthly-postmortem-demo/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+              <img src="assets/pm.webp" width="960" height="667" loading="lazy" alt="" />
+              <span class="thumb-note">Datos ficticios</span>
+            </a>
+            <div class="project-body">
+              <h4 class="project-title">Hub de postmortem mensual</h4>
+              <p class="project-desc">Hub de cierre mensual para varias campañas: se elige la fecha, se procesan las campañas y se obtiene un tablero para el correo, un Excel con hojas MES y DIA y un borrador de correo para revisar antes de enviar.</p>
+              <div class="project-tags"><span class="tag">Cierre mensual</span><span class="tag">Excel</span><span class="tag">HTML · CSS · JS</span></div>
+              <div class="project-actions">
+                <a class="link-btn primary" href="https://agonzalez-97.github.io/monthly-postmortem-demo/" target="_blank" rel="noopener noreferrer">Ver demo →</a>
+                <a class="link-btn ghost" href="https://github.com/AGonzalez-97/monthly-postmortem-demo" target="_blank" rel="noopener noreferrer">Código de la demo</a>
+              </div>
+            </div>
+          </article>
 
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="group-head reveal">
+          <h3>Proyectos personales</h3>
+          <span>Hechos por gusto y para aprender, con asistencia de IA y especificaciones.</span>
+        </div>
+        <div class="projects-grid">
+
+          <article class="glass lift project-card reveal">
+            <a class="project-thumb" href="https://axelbarber.vercel.app" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+              <img src="assets/barber.webp" width="960" height="608" loading="lazy" alt="" />
+            </a>
+            <div class="project-body">
+              <h4 class="project-title">BarberApp</h4>
+              <p class="project-desc">PWA para gestión de turnos de barbería: reservas online, panel de administración, programa de fidelización con descuentos automáticos y analytics.</p>
+              <div class="project-tags"><span class="tag">Next.js 14</span><span class="tag">Supabase</span><span class="tag">TypeScript</span><span class="tag">PWA</span></div>
+              <div class="project-actions">
+                <a class="link-btn primary" href="https://axelbarber.vercel.app" target="_blank" rel="noopener noreferrer">Ver sitio →</a>
+                <a class="link-btn ghost" href="https://github.com/AGonzalez-97/BarberApp" target="_blank" rel="noopener noreferrer">Código</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="glass lift project-card reveal">
+            <a class="project-thumb" href="https://agonzalez-97.github.io/HeadUnitLite/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+              <img src="assets/hul.webp" width="960" height="592" loading="lazy" alt="" />
+              <span class="thumb-note">Demo con datos ficticios</span>
+            </a>
+            <div class="project-body">
+              <h4 class="project-title">HeadUnitLite</h4>
+              <p class="project-desc">Launcher para la radio Android de un auto (clima, música, radio FM, navegación y diagnóstico OBD2) y una app compañera para mantenimiento, nafta y neumáticos. Un pasatiempo que nació para mi propio auto.</p>
+              <div class="project-tags"><span class="tag">Kotlin</span><span class="tag">Jetpack Compose</span><span class="tag">Android</span><span class="tag">OBD2</span></div>
+              <div class="project-actions">
+                <a class="link-btn primary" href="https://agonzalez-97.github.io/HeadUnitLite/" target="_blank" rel="noopener noreferrer">Ver demo →</a>
+                <a class="link-btn ghost" href="https://github.com/AGonzalez-97/HeadUnitLite" target="_blank" rel="noopener noreferrer">Código</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
       </div>
     </section>
-  </div>
 
-  <hr class="divider" />
+    <hr class="divider" />
 
-  <!-- STACK -->
-  <div class="content">
+    <!-- STACK -->
     <section id="stack">
       <p class="section-label reveal">Stack</p>
       <h2 class="section-title gradient-text reveal">Con qué trabajo</h2>
 
-      <div class="stack-grid">
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">⚡</div>
-          <div class="stack-name">Next.js</div>
-          <div class="stack-desc">App Router, SSR, API Routes</div>
+      <div class="group">
+        <div class="group-head reveal">
+          <h3>Operación y datos</h3>
+          <span>Lo que uso todos los días en mi trabajo.</span>
         </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">🔷</div>
-          <div class="stack-name">TypeScript</div>
-          <div class="stack-desc">Strict mode siempre</div>
+        <div class="stack-grid">
+          <div class="glass stack-card reveal"><div class="stack-name">Real-Time / WFM</div><div class="stack-desc">Monitoreo de colas, gestión intradía, nivel de servicio, ASA, AHT y adherencia</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Excel / VBA</div><div class="stack-desc">Avanzado: macros y automatización de reportes</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Python</div><div class="stack-desc">Pandas, XlsxWriter, Tkinter y APIs REST</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">SQL</div><div class="stack-desc">Consultas básicas</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Power BI</div><div class="stack-desc">Nivel básico</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Plataformas de contact center</div><div class="stack-desc">Genesys Cloud, Five9, Avaya y Salesforce</div></div>
         </div>
+      </div>
 
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">🎨</div>
-          <div class="stack-name">Tailwind CSS</div>
-          <div class="stack-desc">Utility-first, mobile-first</div>
+      <div class="group">
+        <div class="group-head reveal">
+          <h3>Proyectos personales</h3>
+          <span>Tecnologías que usé en mis proyectos, con asistencia de IA.</span>
         </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">🗄️</div>
-          <div class="stack-name">Supabase</div>
-          <div class="stack-desc">PostgreSQL + RLS + Auth</div>
+        <div class="stack-grid">
+          <div class="glass stack-card reveal"><div class="stack-name">Next.js y TypeScript</div><div class="stack-desc">App Router, SSR y API Routes</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Supabase</div><div class="stack-desc">PostgreSQL, autenticación y RLS</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Tailwind CSS</div><div class="stack-desc">Interfaces mobile-first</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Android / Kotlin</div><div class="stack-desc">Jetpack Compose y Room</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Git y GitHub</div><div class="stack-desc">Versionado, GitHub Pages y Vercel</div></div>
+          <div class="glass stack-card reveal"><div class="stack-name">Desarrollo spec-driven</div><div class="stack-desc">Defino requisitos y reglas; la IA escribe el código y yo valido</div></div>
         </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">▲</div>
-          <div class="stack-name">Vercel</div>
-          <div class="stack-desc">Deploy, edge, analytics</div>
-        </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">🐍</div>
-          <div class="stack-name">Python</div>
-          <div class="stack-desc">Automatización y scripts</div>
-        </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">📱</div>
-          <div class="stack-name">Android / Kotlin</div>
-          <div class="stack-desc">Apps móviles nativas</div>
-        </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">🔐</div>
-          <div class="stack-name">Seguridad web</div>
-          <div class="stack-desc">RLS, CSRF, rate limiting</div>
-        </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">📊</div>
-          <div class="stack-name">Power BI</div>
-          <div class="stack-desc">Nivel básico</div>
-        </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">🗃️</div>
-          <div class="stack-name">SQL</div>
-          <div class="stack-desc">Consultas básicas</div>
-        </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">🐼</div>
-          <div class="stack-name">Python Data</div>
-          <div class="stack-desc">Pandas, XlsxWriter, reportes</div>
-        </div>
-
-        <div class="glass stack-card reveal">
-          <div class="stack-icon">📋</div>
-          <div class="stack-name">Excel / VBA</div>
-          <div class="stack-desc">Avanzado, automatización</div>
-        </div>
-
       </div>
     </section>
-  </div>
 
-  <hr class="divider" />
+    <hr class="divider" />
 
-  <!-- CONTACTO -->
-  <div class="content">
+    <!-- CONTACTO -->
     <section id="contacto">
       <p class="section-label reveal">Contacto</p>
       <h2 class="section-title gradient-text reveal">¿Hablamos?</h2>
-      <p style="color:rgba(255,255,255,0.5);max-width:480px;line-height:1.7;margin-bottom:40px;" class="reveal">
+      <p class="muted reveal" style="max-width:520px;line-height:1.7;margin:0 0 32px;">
         Busco roles de Real-Time, WFM, reporting o análisis de datos operativos. También trabajo con negocios que necesitan soluciones digitales.
       </p>
-      <div class="contact-buttons reveal">
-        <a href="https://www.instagram.com/axel.dev97/" target="_blank" rel="noopener noreferrer" class="btn-glow" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#bc1888);">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-          </svg>
-          @axel.dev97
-        </a>
-        <a href="https://www.linkedin.com/in/ahgonzalez97/" target="_blank" rel="noopener noreferrer" class="btn-outline">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-          </svg>
-          LinkedIn
+      <div class="btn-row reveal">
+        <a href="https://www.linkedin.com/in/ahgonzalez97/" target="_blank" rel="noopener noreferrer" class="btn-glow">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          Escribime por LinkedIn
         </a>
         <a href="https://github.com/AGonzalez-97" target="_blank" rel="noopener noreferrer" class="btn-outline">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
+        </a>
+        <a href="https://www.instagram.com/axel.dev97/" target="_blank" rel="noopener noreferrer" class="btn-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          @axel.dev97
         </a>
       </div>
     </section>
-  </div>
+  </main>
 
-  <footer>© 2026 Axel Gonzalez · Tucumán, Argentina</footer>
+  <footer>© 2026 Axel Gonzalez · Tafí Viejo, Tucumán, Argentina</footer>
 
   <script>
-    // Cursor glow
+    // Cursor glow (pointer devices only)
     const glow = document.getElementById('cursor-glow')
-    document.addEventListener('mousemove', e => {
-      glow.style.left = e.clientX + 'px'
-      glow.style.top  = e.clientY + 'px'
-    })
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px'
+        glow.style.top = e.clientY + 'px'
+      })
+    } else {
+      glow.remove()
+    }
 
-    // Scroll spy — active nav link
+    // Scroll spy: active nav link
     const sections = ['sobre-mi', 'proyectos', 'stack', 'contacto'].map(id => document.getElementById(id))
     const navLinks = document.querySelectorAll('.nav-links a')
     const spyObserver = new IntersectionObserver(entries => {
@@ -788,10 +479,9 @@
           observer.unobserve(e.target)
         }
       })
-    }, { threshold: 0.12 })
-
+    }, { threshold: 0.08 })
     document.querySelectorAll('.reveal').forEach((el, i) => {
-      el.style.transitionDelay = (i % 4) * 80 + 'ms'
+      el.style.transitionDelay = (i % 3) * 70 + 'ms'
       observer.observe(el)
     })
   </script>
