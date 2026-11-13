@@ -120,6 +120,9 @@
     .group-head span { font-size: 0.8rem; color: rgba(255,255,255,0.55); }
     .group + .group { margin-top: 52px; }
 
+    /* Keep section headings clear of the fixed nav when jumping to an anchor */
+    section { scroll-margin-top: 64px; }
+
     /* ── Hero ── */
     .hero { min-height: 100vh; max-width: 1080px; margin: 0 auto; padding: 110px 24px 56px; display: grid; align-items: center; gap: 48px; grid-template-columns: 1fr; }
     @media (min-width: 940px) { .hero { grid-template-columns: 1.05fr 1fr; } }
@@ -219,7 +222,7 @@
   <div class="grid-overlay"></div>
 
   <!-- NAV -->
-  <nav class="content" aria-label="Principal">
+  <nav aria-label="Principal">
     <div class="nav-inner">
       <a class="nav-logo" href="#inicio">axel.dev97</a>
       <div class="nav-links">
