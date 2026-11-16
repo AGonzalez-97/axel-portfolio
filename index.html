@@ -126,7 +126,8 @@
     /* ── Hero ── */
     .hero { min-height: 100vh; min-height: 100svh; max-width: 1080px; margin: 0 auto; padding: 110px 24px 56px; display: grid; align-items: center; gap: 48px; grid-template-columns: 1fr; }
     @media (min-width: 940px) { .hero { grid-template-columns: 1.05fr 1fr; } }
-    .hero h1 { font-size: clamp(3.2rem, 9vw, 5.6rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; margin: 22px 0; }
+    .hero-name { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; color: #c4b5fd; margin: 22px 0 0; }
+    .hero h1 { font-size: clamp(2.2rem, 5.4vw, 3.5rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; margin: 10px 0 22px; text-wrap: balance; }
     .hero p.lead { font-size: 1.1rem; color: rgba(255,255,255,0.66); max-width: 520px; line-height: 1.7; margin: 0 0 32px; }
     .hero-shot { display: block; text-decoration: none; color: inherit; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.14); background: #0b0f1e; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 80px rgba(124,58,237,0.18); transition: transform 0.35s ease, box-shadow 0.35s ease; }
     @media (min-width: 940px) { .hero-shot { transform: perspective(1400px) rotateY(-7deg) rotateX(2deg); } .hero-shot:hover { transform: perspective(1400px) rotateY(-2deg) rotateX(0deg) translateY(-4px); } }
@@ -277,7 +278,8 @@
     <div class="hero">
       <div>
         <div class="badge"><span class="badge-dot"></span>Disponible para roles de Real-Time, WFM y Reporting · Tucumán o remoto</div>
-        <h1 class="gradient-text-hero">Axel<br/>Gonzalez</h1>
+        <p class="hero-name">Axel González</p>
+        <h1 class="gradient-text-hero">Reportes de contact center en menos de 5 minutos, no en 40.</h1>
         <p class="lead">
           Analista de Real-Time y Reporting en Workforce Management. Automatizo reportes con Python
           y Excel VBA, y construyo productos digitales para negocios reales.
