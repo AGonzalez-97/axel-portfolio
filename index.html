@@ -161,6 +161,19 @@
     .project-desc { font-size: 0.88rem; color: rgba(255,255,255,0.66); line-height: 1.65; margin: 0; }
     .project-problem { font-size: 0.86rem; color: rgba(255,255,255,0.82); line-height: 1.6; margin: 0; padding-left: 10px; border-left: 2px solid rgba(167,139,250,0.5); }
     .project-problem strong { color: #c4b5fd; font-weight: 600; }
+    .project-solved { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    .project-solved li { display: flex; gap: 8px; font-size: 0.84rem; color: rgba(255,255,255,0.7); line-height: 1.55; }
+    .project-solved li::before { content: '✓'; color: #67e8f9; flex: none; }
+    .project-solved-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin: 4px 0 0; }
+    .xp-sub { font-size: 0.9rem; color: rgba(255,255,255,0.6); margin: -8px 0 24px; }
+    .xp { display: grid; gap: 16px; }
+    .xp-item { padding: 24px 28px; }
+    .xp-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin: 0 0 14px; }
+    .xp-head h3 { font-size: 1rem; font-weight: 700; margin: 0; }
+    .xp-date { font-size: 0.8rem; color: rgba(196,181,253,0.9); white-space: nowrap; }
+    .xp-item ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+    .xp-item li { display: flex; gap: 12px; font-size: 0.89rem; color: rgba(255,255,255,0.68); line-height: 1.55; }
+    .xp-item li::before { content: '▸'; color: #a78bfa; flex: none; }
     .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .project-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 8px; }
     .link-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 0.82rem; font-weight: 600; text-decoration: none; padding: 8px 14px; border-radius: 9999px; transition: background 0.2s, border-color 0.2s; }
@@ -192,7 +205,8 @@
       .orb { filter: blur(56px); }
       .orb-3, .orb-4 { display: none; }
     }
-    @media (max-width: 380px) { .nav-links a { font-size: 0.8rem; padding: 0 6px; } .nav-links { gap: 2px; } }
+    @media (max-width: 480px) { .nav-inner { padding: 14px 8px; } .nav-links { gap: 0; } .nav-links a { font-size: 0.8rem; padding: 0 6px; } }
+    @media (max-width: 340px) { .nav-links a { font-size: 0.74rem; padding: 0 4px; } }
     @media (pointer: coarse) {
       a, button { -webkit-tap-highlight-color: rgba(124,58,237,0.25); }
       .nav-links a, .link-btn { display: inline-flex; align-items: center; min-height: 44px; }
@@ -250,6 +264,7 @@
       <a class="nav-logo" href="#inicio">axel.dev97</a>
       <div class="nav-links">
         <a href="#sobre-mi">Sobre mí</a>
+        <a href="#experiencia">Experiencia</a>
         <a href="#proyectos">Proyectos</a>
         <a href="#stack">Stack</a>
         <a href="#contacto">Contacto</a>
@@ -261,7 +276,7 @@
   <header class="content" id="inicio">
     <div class="hero">
       <div>
-        <div class="badge"><span class="badge-dot"></span>Abierto a oportunidades</div>
+        <div class="badge"><span class="badge-dot"></span>Disponible para roles de Real-Time, WFM y Reporting · Tucumán o remoto</div>
         <h1 class="gradient-text-hero">Axel<br/>Gonzalez</h1>
         <p class="lead">
           Analista de Real-Time y Reporting en Workforce Management. Automatizo reportes con Python
@@ -271,6 +286,10 @@
           <a href="#proyectos" class="btn-glow">
             Ver proyectos
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </a>
+          <a href="assets/Axel_Gonzalez_CV.pdf" download class="btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+            Descargar CV
           </a>
           <a href="https://www.linkedin.com/in/ahgonzalez97/" target="_blank" rel="noopener noreferrer" class="btn-outline">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -333,6 +352,52 @@
 
     <hr class="divider" />
 
+    <!-- EXPERIENCIA -->
+    <section id="experiencia">
+      <p class="section-label reveal">Experiencia</p>
+      <h2 class="section-title gradient-text reveal">Mi recorrido</h2>
+      <p class="xp-sub reveal">Teleperformance · San Miguel de Tucumán · 10/2019 a la actualidad</p>
+
+      <div class="xp">
+        <article class="glass xp-item reveal">
+          <div class="xp-head">
+            <h3>Staff WFM · Real-Time y Reporting (Mission Control Online)</h3>
+            <span class="xp-date">07/2022 – Actualidad</span>
+          </div>
+          <ul>
+            <li>Monitoreo en tiempo real colas y agentes en distintas líneas de negocio: nivel de servicio, ASA, AHT, adherencia y conectados por intervalo.</li>
+            <li>Coordino con supervisión la gestión de desvíos operativos y ajusto turnos en tiempo real para cuentas de Chile y Argentina.</li>
+            <li>Automaticé con macros de Excel VBA la consolidación de datos por línea de negocio y el envío de reportes por Outlook.</li>
+            <li>Concilio el roster semanal de agentes con el sistema de usuarios para identificar inconsistencias.</li>
+          </ul>
+        </article>
+
+        <article class="glass xp-item reveal">
+          <div class="xp-head">
+            <h3>Gestor de Redes Sociales y Asesoramiento</h3>
+            <span class="xp-date">08/2021 – 07/2022</span>
+          </div>
+          <ul>
+            <li>Atención por Facebook, Twitter y WhatsApp en un canal con más de 500 interacciones diarias.</li>
+            <li>95 % de resolución y 20 % menos en mis tiempos de espera.</li>
+          </ul>
+        </article>
+
+        <article class="glass xp-item reveal">
+          <div class="xp-head">
+            <h3>Representante de Atención al Cliente</h3>
+            <span class="xp-date">10/2019 – 08/2021</span>
+          </div>
+          <ul>
+            <li>Soporte técnico y comercial telefónico, con unas 60 llamadas diarias.</li>
+            <li>Quality Score superior al 90 %, CSAT de 4,5/5 y FCR superior al 85 %.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
     <!-- PROYECTOS -->
     <section id="proyectos">
       <p class="section-label reveal">Proyectos</p>
@@ -354,6 +419,12 @@
               <h4 class="project-title">Panel de reportes operativos</h4>
               <p class="project-desc">Sistema de reportes para contact center con varias campañas: nivel de atención, nivel de servicio, abandono, tiempos de atención y dotación por franja de 30 minutos. Representa el tipo de herramientas que desarrollo en mi trabajo.</p>
               <p class="project-problem"><strong>Problema que resuelve:</strong> ver en un solo lugar cómo viene cada campaña, intervalo por intervalo, para detectar desvíos mientras todavía se pueden corregir.</p>
+              <p class="project-solved-label">En la herramienta real</p>
+              <ul class="project-solved">
+                <li>Consolida datos de distintas fuentes y calcula las métricas por intervalo de 30 minutos.</li>
+                <li>La elaboración del reporte pasó de más de 40 minutos a menos de 5 por campaña, y la usan más de 6 campañas.</li>
+                <li>Se distribuye como ejecutable con actualización automática y un glosario de unas 40 métricas.</li>
+              </ul>
               <div class="project-tags"><span class="tag">Reporting</span><span class="tag">KPIs por intervalo</span><span class="tag">HTML · CSS · JS</span></div>
               <div class="project-actions">
                 <a class="link-btn primary" href="https://agonzalez-97.github.io/contact-center-kpi-demo/" target="_blank" rel="noopener noreferrer">Ver demo →</a>
@@ -371,6 +442,11 @@
               <h4 class="project-title">Hub de postmortem mensual</h4>
               <p class="project-desc">Hub de cierre mensual para varias campañas: se elige la fecha, se procesan las campañas y se obtiene un tablero para el correo, un Excel con hojas MES y DIA y un borrador de correo para revisar antes de enviar.</p>
               <p class="project-problem"><strong>Problema que resuelve:</strong> hacer el cierre mensual de varias campañas en un solo flujo, en vez de armar el tablero, el Excel y el correo por separado.</p>
+              <p class="project-solved-label">En la herramienta real</p>
+              <ul class="project-solved">
+                <li>Arma el cierre del día anterior (D-1) y el acumulado del mes.</li>
+                <li>Compara el mes en curso contra los meses anteriores.</li>
+              </ul>
               <div class="project-tags"><span class="tag">Cierre mensual</span><span class="tag">Excel</span><span class="tag">HTML · CSS · JS</span></div>
               <div class="project-actions">
                 <a class="link-btn primary" href="https://agonzalez-97.github.io/monthly-postmortem-demo/" target="_blank" rel="noopener noreferrer">Ver demo →</a>
